@@ -8,9 +8,14 @@ Gem::Specification.new do |gem|
   gem.version       = Shiva::VERSION
   gem.authors       = ['Pierre Schambacher', 'Mike Połtyn']
   gem.email         = ['pschambacher@fusioneer.com', 'mpoltyn@fusioneer.com']
-  gem.description   = %q{Write a gem description}
-  gem.summary       = %q{Write a gem summary}
+  gem.description   = %q{Add rake tasks to deal with several databases.}
+  gem.summary       = <<-EOS
+Rails and ActiveRecord aren't really meant to deal with several database at a time just out of the box.
+Shiva extends the rake tasks (like migrate of schema:dump) to work with several databases.
+This way you have a folder in db/migrate for each database, a separate schema.rb for each, etc.
+EOS
   gem.homepage      = ''
+  gem.licence       = 'MIT'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
