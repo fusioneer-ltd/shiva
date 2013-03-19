@@ -15,7 +15,7 @@ Shiva extends the rake tasks (like migrate of schema:dump) to work with several 
 This way you have a folder in db/migrate for each database, a separate schema.rb for each, etc.
 EOS
   gem.homepage      = ''
-  gem.licence       = 'MIT'
+  #gem.licence       = 'MIT'
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

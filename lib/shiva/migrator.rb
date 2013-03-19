@@ -5,8 +5,24 @@ class Shiva::Migrator
   def self.migrate database
     using_connection database.base_model.connection do
       ::ActiveRecord::Migration.verbose = verbose?
-      ::ActiveRecord::Migrator.migrate("db/migrate/#{database.name}/", version) do |migration|
+      ::ActiveRecord::Migrator.migrate(database.migration_path, version) do |migration|
         ENV['SCOPE'].blank? || (ENV['SCOPE'] == migration.scope)
+      end
+    end
+  end
+
+  def self.rollback database, step
+    using_connection database.base_model.connection do
+      ::ActiveRecord::Migrator.rollback(database.migration_path, step)
+    end
+  end
+
+  def self.pending_migrations database
+    using_connection database.base_model.connection do
+      if ::ActiveRecord::Migrator.respond_to?(:open)
+        ::ActiveRecord::Migrator.open(database.migration_path).pending_migrations
+      else
+        ::ActiveRecord::Migrator.new(:up, database.migration_path).pending_migrations
       end
     end
   end
