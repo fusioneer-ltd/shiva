@@ -24,12 +24,13 @@ Or install it yourself as:
 
 ### Configuration
 
-You will need to configure Shiva to explain the databases it is supposed to handle
+You will need to configure Shiva to explain the databases it is supposed to handle.
+You absolutely need to use the class name using a string, we had some weird issues using the class directly with RSpec ... no sure why for now.
 
 ```ruby
 Shiva.configure do
-  database Databases::Archive # The name will be guessed from the class_name, archive here
-  database Databases::Legacy, :old_db # Explicitly define the name
+  database 'Databases::Archive' # The name will be guessed from the class_name, archive here
+  database 'Databases::Legacy', :old_db # Explicitly define the name
 end
 ```
 

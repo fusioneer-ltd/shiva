@@ -1,6 +1,6 @@
 # -*- encoding : utf-8 -*-
 class Shiva::Database
-  attr_accessor :base_model, :name
+  attr_accessor :base_model_name, :name
 
   def migration_path
     "db/migrate/#{name}/"
@@ -14,9 +14,13 @@ class Shiva::Database
     "db/seeds/#{name}.rb"
   end
 
+  def base_model
+    base_model_name.constantize
+  end
+
   private
   def initialize base_model, name
-    self.base_model = base_model
-    self.name       = name
+    self.base_model_name = base_model
+    self.name            = name
   end
 end
