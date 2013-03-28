@@ -1,6 +1,4 @@
 # required by Shiva::Database
-require 'active_support/inflector'
-
 describe Shiva do
   describe :configuration do
     it 'raises error without configuration' do
