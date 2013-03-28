@@ -1,5 +1,6 @@
 # -*- encoding : utf-8 -*-
 require 'shiva/database'
+require 'active_support/core_ext/class/attribute_accessors'
 require 'active_record/schema_dumper'
 
 class Shiva::Dumper

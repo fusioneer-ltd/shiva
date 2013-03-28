@@ -11,7 +11,7 @@ module Shiva
   end
 
   def self.configuration
-    raise 'You have to run Shiva.configure before using Shiva' if @configuration.blank?
+    raise 'You have to run Shiva.configure before using Shiva' unless @configuration
     @configuration
   end
 end
