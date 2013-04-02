@@ -69,4 +69,7 @@ describe 'shiva namespace rake task' do
       end
     end
   end
+
+  pending "oh my, no tests for Rake task on proper instances :("
+
 end
