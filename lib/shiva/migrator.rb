@@ -33,11 +33,12 @@ class Shiva::Migrator
     ActiveRecord::Base.establish_connection connection.config
     yield
   ensure
-    ActiveRecord::Base.establish_connection original
+    # only reconnect if there was a connection
+    ActiveRecord::Base.establish_connection(original) if original
   end
 
   def self.verbose?
-    ENV['VERBOSE'] ? ENV['VERBOSE'] == 'true' : true
+    ENV['VERBOSE'] ? ENV['VERBOSE'] == 'true' : (defined?(VERBOSE) ? VERBOSE : true)
   end
 
   def self.version
