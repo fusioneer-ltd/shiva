@@ -1,0 +1,11 @@
+language: ruby
+script: "bundle exec rspec spec"
+env:
+  -
+  - RAILS_3_0=true
+  - RAILS_3_1=true
+rvm:
+  - 1.9.3
+  - jruby-19mode
+  - rbx-19mode
+  - ruby-head

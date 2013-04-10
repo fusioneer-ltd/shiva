@@ -23,8 +23,24 @@ EOS
   gem.require_paths = ['lib']
 
   gem.add_dependency 'rake'
-  gem.add_dependency 'activesupport'
-  gem.add_dependency 'activerecord'
+  if ENV['RAILS_3_0']
+    gem.add_dependency 'activesupport', '~> 3.0.0'
+    gem.add_dependency 'activerecord', '~> 3.0.0'
+    gem.add_dependency 'activemodel', '~> 3.0.0'
+  elsif ENV['RAILS_3_1']
+    gem.add_dependency 'activesupport', '~> 3.1.0'
+    gem.add_dependency 'activerecord', '~> 3.1.0'
+    gem.add_dependency 'activemodel', '~> 3.1.0'
+  elsif ENV['RAILS_3_2']
+    gem.add_dependency 'activesupport', '~> 3.2.0'
+    gem.add_dependency 'activerecord', '~> 3.2.0'
+    gem.add_dependency 'activemodel', '~> 3.2.0'
+  else
+    # normal case
+    gem.add_dependency 'activesupport', '>= 3.0.0'
+    gem.add_dependency 'activerecord', '>= 3.0.0'
+    gem.add_dependency 'activemodel', '>= 3.0.0'
+  end
   gem.add_development_dependency 'rspec'
   gem.add_development_dependency 'simplecov'
   if defined?(JRUBY_VERSION)
