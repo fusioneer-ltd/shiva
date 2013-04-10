@@ -1,5 +1,5 @@
 require 'shiva/migrator'
-require 'support/use_sqlite_database'
+require 'support/sqlite_database'
 require 'active_record'
 require 'models/pony'
 module ShivaSpec
@@ -20,7 +20,21 @@ end
 describe Shiva::Migrator do
 
   describe :migrate do
-    context 'ponies' do
+    context 'without already existing database' do
+      # Never use checked-in files, always use copies!
+      remove_sqlite_database 'ponies'
+
+      before :each do
+        database = ShivaSpec::Database.new('Pony', 'ponies')
+        Shiva::Migrator.migrate database
+      end
+
+      subject { Pony.columns.map(&:name) }
+      its(:size) { should eq 3 }
+      it { should include 'race' }
+    end
+
+    context 'with already existing database' do
       # Never use checked-in files, always use copies!
       use_sqlite_database 'ponies'
 
@@ -29,14 +43,30 @@ describe Shiva::Migrator do
         Shiva::Migrator.migrate database
       end
 
-      subject { Pony.columns }
+      subject { Pony.columns.map(&:name) }
       its(:size) { should eq 3 }
-      it { subject.map(&:name).should include 'race' }
+      it { should include 'race' }
     end
     pending "oh my, no tests for migrate with version :("
   end
 
-  pending "oh my, no tests for rollback :("
+  describe :rollback do
+    context 'ponies' do
+      # Never use checked-in files, always use copies!
+      use_sqlite_database 'ponies'
+
+      before :each do
+        database = ShivaSpec::Database.new('Pony', 'ponies')
+        Shiva::Migrator.migrate database
+        Shiva::Migrator.rollback database, 2
+      end
+
+      subject { Pony.columns.map(&:name) }
+      its(:size) { should eq 2 }
+      it { should_not include 'race' }
+    end
+  end
+
   pending "oh my, no tests for pending_migration :("
 
 end
