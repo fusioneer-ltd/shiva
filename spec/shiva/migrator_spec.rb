@@ -47,7 +47,26 @@ describe Shiva::Migrator do
       its(:size) { should eq 3 }
       it { should include 'race' }
     end
-    pending "oh my, no tests for migrate with version :("
+
+    context 'with a specific version' do
+      # Never use checked-in files, always use copies!
+      use_sqlite_database 'ponies'
+
+      before :each do
+        database = ShivaSpec::Database.new('Pony', 'ponies')
+        begin
+          old_env_version = ENV['VERSION']
+          ENV['VERSION'] = '2'
+          Shiva::Migrator.migrate database
+        ensure
+          ENV['VERSION'] = old_env_version
+        end
+      end
+
+      subject { Pony.columns.map(&:name) }
+      its(:size) { should eq 3 }
+      it { should include 'race' }
+    end
   end
 
   describe :rollback do
