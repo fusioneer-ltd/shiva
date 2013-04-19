@@ -51,7 +51,23 @@ describe Shiva::Migrator do
   end
 
   describe :rollback do
-    context 'ponies' do
+    context 'columns' do
+      # Never use checked-in files, always use copies!
+      use_sqlite_database 'ponies'
+
+      before :each do
+        database = ShivaSpec::Database.new('Pony', 'ponies')
+        Shiva::Migrator.migrate database
+        Shiva::Migrator.rollback database, 1
+        Pony.reset_column_information
+      end
+
+      subject { Pony.columns.map(&:name) }
+      its(:size) { should eq 2 }
+      it { should_not include 'race' }
+    end
+
+    context 'model' do
       # Never use checked-in files, always use copies!
       use_sqlite_database 'ponies'
 
@@ -59,11 +75,11 @@ describe Shiva::Migrator do
         database = ShivaSpec::Database.new('Pony', 'ponies')
         Shiva::Migrator.migrate database
         Shiva::Migrator.rollback database, 2
+        Pony.reset_column_information
       end
 
-      subject { Pony.columns.map(&:name) }
-      its(:size) { should eq 2 }
-      it { should_not include 'race' }
+      subject { Pony }
+      its(:table_exists?) { should be_false }
     end
   end
 
