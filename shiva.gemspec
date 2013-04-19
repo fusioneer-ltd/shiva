@@ -45,8 +45,8 @@ EOS
   gem.add_development_dependency 'simplecov'
   if defined?(JRUBY_VERSION)
     gem.add_development_dependency 'jdbc-sqlite3'
-    gem.add_development_dependency 'activerecord-jdbc-adapter'
-    gem.add_development_dependency 'activerecord-jdbcsqlite3-adapter'
+    gem.add_development_dependency 'activerecord-jdbc-adapter', '1.3.0DEV'
+    gem.add_development_dependency 'activerecord-jdbcsqlite3-adapter', '1.3.0DEV'
     gem.add_development_dependency 'jdbc-jtds'
   else
     gem.add_development_dependency 'sqlite3'
