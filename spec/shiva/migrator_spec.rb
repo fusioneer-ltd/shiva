@@ -3,7 +3,7 @@ require 'support/sqlite_database'
 require 'active_record'
 require 'models/pony'
 module ShivaSpec
-  class Database < Shiva::Database
+  class MigratorDatabase < Shiva::Database
     def migration_path
       "spec/migrations/#{name}/"
     end
@@ -25,7 +25,7 @@ describe Shiva::Migrator do
       remove_sqlite_database 'ponies'
 
       before :each do
-        database = ShivaSpec::Database.new('Pony', 'ponies')
+        database = ShivaSpec::MigratorDatabase.new('Pony', 'ponies')
         Shiva::Migrator.migrate database
       end
 
@@ -39,7 +39,7 @@ describe Shiva::Migrator do
       use_sqlite_database 'ponies'
 
       before :each do
-        database = ShivaSpec::Database.new('Pony', 'ponies')
+        database = ShivaSpec::MigratorDatabase.new('Pony', 'ponies')
         Shiva::Migrator.migrate database
       end
 
@@ -53,7 +53,7 @@ describe Shiva::Migrator do
       use_sqlite_database 'ponies'
 
       before :each do
-        database = ShivaSpec::Database.new('Pony', 'ponies')
+        database = ShivaSpec::MigratorDatabase.new('Pony', 'ponies')
         begin
           old_env_version = ENV['VERSION']
           ENV['VERSION'] = '2'
@@ -75,7 +75,7 @@ describe Shiva::Migrator do
       use_sqlite_database 'ponies'
 
       before :each do
-        database = ShivaSpec::Database.new('Pony', 'ponies')
+        database = ShivaSpec::MigratorDatabase.new('Pony', 'ponies')
         Shiva::Migrator.migrate database
         Shiva::Migrator.rollback database, 1
         Pony.reset_column_information
@@ -93,7 +93,7 @@ describe Shiva::Migrator do
       use_sqlite_database 'ponies'
 
       before :each do
-        database = ShivaSpec::Database.new('Pony', 'ponies')
+        database = ShivaSpec::MigratorDatabase.new('Pony', 'ponies')
         Shiva::Migrator.migrate database
         Shiva::Migrator.rollback database, 2
         Pony.reset_column_information
@@ -107,7 +107,7 @@ describe Shiva::Migrator do
   describe :pending_migrations do
     # Never use checked-in files, always use copies!
     use_sqlite_database 'ponies'
-    before { @database = ShivaSpec::Database.new('Pony', 'ponies') }
+    before { @database = ShivaSpec::MigratorDatabase.new('Pony', 'ponies') }
     subject { Shiva::Migrator.pending_migrations(@database) }
 
     its(:size) { should eq 1 }
