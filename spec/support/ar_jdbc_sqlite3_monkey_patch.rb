@@ -2,10 +2,8 @@
 if defined?(JRUBY_VERSION)
   require 'arjdbc'
   require 'arjdbc/sqlite3'
-  require 'pry'
   ArJdbc::SQLite3.module_eval do
     def indexes(table_name, name = nil) # :nodoc:
-      binding.pry
       exec_query("PRAGMA index_list(#{quote_table_name(table_name)})", 'SCHEMA').map do |row|
         name = row['name']
         unique = row['unique'] != 0
