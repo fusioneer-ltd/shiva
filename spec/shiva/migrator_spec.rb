@@ -104,6 +104,15 @@ describe Shiva::Migrator do
     end
   end
 
-  pending "oh my, no tests for pending_migration :("
+  describe :pending_migrations do
+    # Never use checked-in files, always use copies!
+    use_sqlite_database 'ponies'
+    before { @database = ShivaSpec::Database.new('Pony', 'ponies') }
+    subject { Shiva::Migrator.pending_migrations(@database) }
+
+    its(:size) { should eq 1 }
+    # version number
+    it { subject.first.version.should eq 2}
+  end
 
 end
