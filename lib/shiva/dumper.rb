@@ -5,7 +5,8 @@ require 'active_record/schema_dumper'
 
 class Shiva::Dumper
   def self.dump database
-    File.open(File.join(Rails.root, database.schema_path), 'w') do |file|
+    path = defined?(Rails) ? Rails.root : Dir.getwd
+    File.open(File.join(path, database.schema_path), 'w') do |file|
       ActiveRecord::SchemaDumper.dump database.base_model.connection, file
     end
   end
