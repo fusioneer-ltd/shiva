@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'rake'
 require 'active_record'
 require 'models/pony'

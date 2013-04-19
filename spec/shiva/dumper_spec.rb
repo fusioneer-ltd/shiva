@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'shiva/migrator'
 require 'shiva/dumper'
 require 'active_record'

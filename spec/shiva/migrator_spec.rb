@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 require 'shiva/migrator'
 require 'support/sqlite_database'
 require 'active_record'

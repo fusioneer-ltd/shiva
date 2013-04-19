@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 describe Shiva::Database do
 
   context "'Integer', 'integer'" do

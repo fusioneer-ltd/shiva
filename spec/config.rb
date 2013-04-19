@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 SPEC_ROOT       = File.expand_path(File.dirname(__FILE__))
 ASSETS_ROOT     = SPEC_ROOT + '/assets'
 FIXTURES_ROOT   = SPEC_ROOT + '/fixtures'

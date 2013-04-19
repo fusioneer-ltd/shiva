@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 # required by Shiva::Database
 describe Shiva do
   describe :configuration do

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 describe Shiva::Configurator do
 
   subject { Shiva::Configurator.new }

@@ -1,3 +1,4 @@
+# -*- encoding : utf-8 -*-
 class AddRace < ActiveRecord::Migration
   def self.up
     add_column :ponies, :race, :string
