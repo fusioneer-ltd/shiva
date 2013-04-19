@@ -63,8 +63,10 @@ describe Shiva::Migrator do
       end
 
       subject { Pony.columns.map(&:name) }
-      its(:size) { should eq 2 }
-      it { should_not include 'race' }
+      its(:size) {should eq 2 }
+      # weird JDBC bug where reset_column_information doesn't reset
+      # column information right after a rollback in SQLite
+      it {Pony.reset_column_information;  should_not include 'race' }
     end
 
     context 'model' do
