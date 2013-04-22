@@ -25,5 +25,4 @@ if defined?(JRUBY_VERSION)
   gem 'jdbc-jtds'
 else
   gem 'sqlite3'
-  gem 'activerecord-sqlite3-adapter'
 end
