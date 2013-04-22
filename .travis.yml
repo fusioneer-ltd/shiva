@@ -1,9 +1,11 @@
 language: ruby
 script: "bundle exec rspec spec"
 env:
-  -
-  - RAILS_3_0=true
-  - RAILS_3_1=true
+  - rails=3.0.0
+  - rails=3.1.0
+  - rails=3.2.0
+  - rails=stable
+  - rails=master
 rvm:
   - 1.9.3
   - jruby-19mode

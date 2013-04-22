@@ -41,15 +41,4 @@ EOS
     gem.add_dependency 'activerecord', '>= 3.0.0'
     gem.add_dependency 'activemodel', '>= 3.0.0'
   end
-  gem.add_development_dependency 'rspec'
-  gem.add_development_dependency 'simplecov'
-  if defined?(JRUBY_VERSION)
-    gem.add_development_dependency 'jdbc-sqlite3'
-    gem.add_development_dependency 'activerecord-jdbc-adapter', '1.3.0DEV'
-    gem.add_development_dependency 'activerecord-jdbcsqlite3-adapter', '1.3.0DEV'
-    gem.add_development_dependency 'jdbc-jtds'
-  else
-    gem.add_development_dependency 'sqlite3'
-    gem.add_development_dependency 'activerecord-sqlite3-adapter'
-  end
 end

@@ -8,7 +8,7 @@ VERBOSE ||= false
 
 if defined?(JRUBY_VERSION)
   require 'jdbc/sqlite3'
-  Jdbc::SQLite3.load_driver
+  Jdbc::SQLite3.load_driver if Jdbc::SQLite3.respond_to?(:load_driver)
 
   SQLITE_ADAPTER = 'jdbcsqlite3'
 else
