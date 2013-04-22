@@ -60,6 +60,40 @@ shiva_namespace = namespace :shiva do
     end
   end
 
+  namespace :schema do
+    desc 'Load a schema.rb file into the database'
+    task :load, [:database_name] => :environment do |_, args|
+      apply_to_databases args do |database_configuration|
+        path = defined?(Rails) ? Rails.root : Dir.getwd
+        file = ENV['SCHEMA'] || File.join(path, database_configuration.schema_path)
+        if File.exists?(file)
+          ActiveRecord::Base.establish_connection(database_configuration.base_model.connection.config)
+          load(file)
+        else
+          abort %{#{file} doesn't exist yet. Run `rake shiva:migrate` to create it, then try again. If you do not intend to use a database, you should instead alter #{path}/config/application.rb to limit the frameworks that will be loaded.}
+        end
+      end
+    end
+  end
+
+  namespace :structure do
+    # desc "Recreate the databases from the structure.sql file"
+    task :load, [:database_name] => :environment do |_, args|
+      apply_to_databases args do |database_configuration|
+        path = defined?(Rails) ? Rails.root : Dir.getwd
+        filename = ENV['DB_STRUCTURE'] || File.join(path, database_configuration.structure_path)
+        config = database_configuration.base_model.connection.config.with_indifferent_access
+        if defined?(ActiveRecord::Tasks::DatabaseTasks)
+          # ActiveRecord 4
+          ActiveRecord::Tasks::DatabaseTasks.structure_load(config, filename)
+        else
+          require 'shiva/legacy_tasks'
+          Shiva::LegacyTasks.structure_load(database_configuration, filename)
+        end
+      end
+    end
+  end
+
   def apply_to_databases arguments
     database_name = arguments[:database_name]
 

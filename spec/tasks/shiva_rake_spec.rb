@@ -12,6 +12,10 @@ module ShivaSpec
       "spec/tmp/#{name}_schema.rb"
     end
 
+    def structure_path
+      "spec/tmp/#{name}_structure.sql"
+    end
+
     def seeds_path
       "spec/seeds/#{name}.rb"
     end
@@ -102,7 +106,9 @@ describe 'shiva namespace rake task' do
     describe 'shiva:migrate' do
       let :run_rake_task do
         Rake::Task['shiva:migrate'].reenable
-        Rake.application.invoke_task 'shiva:migrate'
+        silence_active_record do
+          Rake.application.invoke_task 'shiva:migrate'
+        end
       end
 
       it 'runs!' do
@@ -117,7 +123,7 @@ describe 'shiva namespace rake task' do
       end
 
       it 'runs!' do
-        run_rake_task
+        silence_active_record { run_rake_task }
       end
     end
 
@@ -143,7 +149,7 @@ describe 'shiva namespace rake task' do
       end
 
       it 'runs for no pending migrations!' do
-        Shiva::Migrator.migrate @database
+        silence_active_record { Shiva::Migrator.migrate(@database) }
         lambda { run_rake_task }.should_not raise_error SystemExit
       end
     end
@@ -161,10 +167,85 @@ describe 'shiva namespace rake task' do
       end
 
       it 'runs for no pending migrations!' do
-        Shiva::Migrator.migrate @database
+        silence_active_record { Shiva::Migrator.migrate(@database) }
         lambda { run_rake_task }.should_not raise_error SystemExit
       end
 
+    end
+
+    context 'shiva:schema' do
+      describe 'load' do
+        context 'with an existing file' do
+          before do
+            FileUtils.cp(File.join(SPEC_ROOT, 'schema', 'ponies_schema.rb'),
+                         File.join(SPEC_ROOT, 'tmp', 'ponies_schema.rb'))
+            Pony.connection.disconnect!
+          end
+          remove_sqlite_database('ponies')
+
+          let :run_rake_task do
+            silence_active_record do
+              Rake::Task['shiva:schema:load'].reenable
+              Rake.application.invoke_task 'shiva:schema:load'
+            end
+          end
+
+          it 'runs!' do
+            Pony.establish_connection(Pony.connection.config)
+            Pony.clear_cache!
+            Pony.should_not be_table_exists
+            run_rake_task
+            Pony.clear_cache!
+            Pony.should be_table_exists
+            Pony.columns.map(&:name).should include 'id', 'name'
+          end
+        end
+
+        context 'without schema file' do
+          before do
+            ShivaSpec::ShivaRakeDatabase.any_instance.stub(:schema_path).and_return('non_existing_file')
+          end
+
+          let :run_rake_task do
+            silence_active_record do
+              Rake::Task['shiva:schema:load'].reenable
+              Rake.application.invoke_task 'shiva:schema:load'
+            end
+          end
+
+          it 'aborts on no file' do
+            lambda { run_rake_task }.should raise_error SystemExit
+          end
+        end
+      end
+    end
+
+    context 'shiva:structure' do
+      describe 'load' do
+        context 'with an existing file' do
+          use_sqlite_database('ponies')
+
+          before do
+            @database = ShivaSpec::ShivaRakeDatabase.new('Pony', 'ponies')
+            Shiva::Dumper.dump(@database)
+          end
+
+          let :run_rake_task do
+            silence_active_record do
+              Rake::Task['shiva:structure:load'].reenable
+              Rake.application.invoke_task 'shiva:structure:load'
+            end
+          end
+
+          it 'runs!' do
+            Pony.clear_cache!
+            run_rake_task
+            Pony.clear_cache!
+            Pony.should be_table_exists
+            Pony.columns.map(&:name).should include 'id', 'name'
+          end
+        end
+      end
     end
   end
 

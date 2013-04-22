@@ -15,6 +15,15 @@ module SqliteDatabase
   end
 
   module Includes
+
+    def silence_active_record(&block)
+      arm = ActiveRecord::Migration.verbose
+      ActiveRecord::Migration.verbose = false
+      yield
+    ensure
+      ActiveRecord::Migration.verbose = arm
+    end
+
     protected
 
     def tmp_sqlite_database_file_path(database_name)
