@@ -62,6 +62,26 @@ It's not something to be proud, it's more that we're not sure how to test it pro
 If we mock ActiveRecord::Migrator then we don't really test a lot of things, if we include a database we're actually testing ActiveRecord::Migrator ...
 If you have any idea please don't hesitate to contact us.
 
+#### Test environment
+
+(Needs updates when using different plaforms)
+
+##### jRuby & SQLite
+
+Due to [an issue in 1.2.9](https://github.com/jruby/activerecord-jdbc-adapter/issues/377) we use a head revision of [`activerecord-jdbc-adapter`](https://github.com/jruby/activerecord-jdbc-adapter) (now in 1.3.0DEV version) for testing our gem:
+
+You will need to [download Ant](http://ant.apache.org/bindownload.cgi) to build JDBC adapters. After that add Ant's `bin` folder into your `PATH` envvar.
+
+```sh
+git clone git@github.com:jruby/activerecord-jdbc-adapter.git
+cd activerecord-jdbc-adapter
+bundle install
+rake build adapters:build
+cd pkg
+gem install activerecord-jdbc-adapter-1.3.0.DEV.gem
+gem install activerecord-jdbcsqlite3-adapter-1.3.0.DEV.gem
+```
+
 ## Contributing
 
 1. Fork it
