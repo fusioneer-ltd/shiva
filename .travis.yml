@@ -4,106 +4,47 @@ env:
   - rails=3.0.0
   - rails=3.1.0
   - rails=3.2.0
-  - rails=stable
   - rails=master
 rvm:
   - 1.9.3
-  - jruby-19mode
   - rbx-19mode
   - ruby-head
-jdk:
-  - openjdk6
-  - openjdk7
-  - oraclejdk7
 matrix:
-  exclude:
-    - rvm: 1.9.3
-      rails: 3.0.0
+matrix:
+  include:
+    - rvm: jruby-19mode
+      env: rails=3.0.0
+      jdk: openjdk6
+    - rvm: jruby-19mode
+      env: rails=3.1.0
+      jdk: openjdk6
+    - rvm: jruby-19mode
+      env: rails=3.2.0
+      jdk: openjdk6
+    - rvm: jruby-19mode
+      env: rails=master
+      jdk: openjdk6
+    - rvm: jruby-19mode
+      env: rails=3.0.0
       jdk: openjdk7
-    - rvm: 1.9.3
-      rails: 3.0.0
+    - rvm: jruby-19mode
+      env: rails=3.1.0
+      jdk: openjdk7
+    - rvm: jruby-19mode
+      env: rails=3.2.0
+      jdk: openjdk7
+    - rvm: jruby-19mode
+      env: rails=master
+      jdk: openjdk7
+    - rvm: jruby-19mode
+      env: rails=3.0.0
       jdk: oraclejdk7
-    - rvm: rbx-19mode
-      rails: 3.0.0
-      jdk: openjdk7
-    - rvm: rbx-19mode
-      rails: 3.0.0
+    - rvm: jruby-19mode
+      env: rails=3.1.0
       jdk: oraclejdk7
-    - rvm: ruby-head
-      rails: 3.0.0
-      jdk: openjdk7
-    - rvm: ruby-head
-      rails: 3.0.0
+    - rvm: jruby-19mode
+      env: rails=3.2.0
       jdk: oraclejdk7
-    - rvm: 1.9.3
-      rails: 3.1.0
-      jdk: openjdk7
-    - rvm: 1.9.3
-      rails: 3.1.0
-      jdk: oraclejdk7
-    - rvm: rbx-19mode
-      rails: 3.1.0
-      jdk: openjdk7
-    - rvm: rbx-19mode
-      rails: 3.1.0
-      jdk: oraclejdk7
-    - rvm: ruby-head
-      rails: 3.1.0
-      jdk: openjdk7
-    - rvm: ruby-head
-      rails: 3.1.0
-      jdk: oraclejdk7
-    - rvm: 1.9.3
-      rails: 3.2.0
-      jdk: openjdk7
-    - rvm: 1.9.3
-      rails: 3.2.0
-      jdk: oraclejdk7
-    - rvm: rbx-19mode
-      rails: 3.2.0
-      jdk: openjdk7
-    - rvm: rbx-19mode
-      rails: 3.2.0
-      jdk: oraclejdk7
-    - rvm: ruby-head
-      rails: 3.2.0
-      jdk: openjdk7
-    - rvm: ruby-head
-      rails: 3.2.0
-      jdk: oraclejdk7
-    - rvm: 1.9.3
-      rails: stable
-      jdk: openjdk7
-    - rvm: 1.9.3
-      rails: stable
-      jdk: oraclejdk7
-    - rvm: rbx-19mode
-      rails: stable
-      jdk: openjdk7
-    - rvm: rbx-19mode
-      rails: stable
-      jdk: oraclejdk7
-    - rvm: ruby-head
-      rails: stable
-      jdk: openjdk7
-    - rvm: ruby-head
-      rails: stable
-      jdk: oraclejdk7
-    - rvm: 1.9.3
-      rails: master
-      jdk: openjdk7
-    - rvm: 1.9.3
-      rails: master
-      jdk: oraclejdk7
-    - rvm: rbx-19mode
-      rails: master
-      jdk: openjdk7
-    - rvm: rbx-19mode
-      rails: master
-      jdk: oraclejdk7
-    - rvm: ruby-head
-      rails: master
-      jdk: openjdk7
-    - rvm: ruby-head
-      rails: master
+    - rvm: jruby-19mode
+      env: rails=master
       jdk: oraclejdk7
