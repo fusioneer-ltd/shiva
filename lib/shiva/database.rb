@@ -11,6 +11,10 @@ module Shiva
       "db/schema/#{name}_schema.rb"
     end
 
+    def structure_path
+      "db/schema/#{name}_structure.sql"
+    end
+
     def seeds_path
       "db/seeds/#{name}.rb"
     end
