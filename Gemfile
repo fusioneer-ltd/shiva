@@ -10,8 +10,8 @@ repos  = {'rails' => github % "rails/rails"}
 
 dep = case ENV['rails']
       when 'stable', nil then nil
-      when /(\d+\.)+\d+/ then "~> " + ENV['rails'].sub("#{'rails'}-", '')
-      else {:git => repos['rails'], :branch => 'master'}
+      when /(\d+\.)+\d+/ then "~> " + ENV['rails'].sub('rails-', '')
+      else {git: repos['rails'], branch: 'master'}
       end
 gem 'activesupport', dep
 gem 'activerecord', dep
