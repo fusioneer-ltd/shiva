@@ -54,7 +54,21 @@ rake shiva:dump
 rake shiva:dump[old_db]
 ```
 
-### Tests
+#### Bare list or Rake tasks
+
+All Rake tasks accept one optional argument, which is a database to work on. When no arguments are passed, work is done on all databases defined by Shiva configurator.
+
+```
+rake shiva:migrate
+rake shiva:rollback
+rake shiva:dump
+rake shiva:abort_if_pending_migrations
+rake shiva:seeds
+rake shiva:schema:load
+rake shiva:structure:load
+```
+
+### Tests [![build status](https://secure.travis-ci.org/fusioneer-ltd/shiva.png)](http://travis-ci.org/fusioneer-ltd/shiva)
 
 For now the code has no spec attached.
 
