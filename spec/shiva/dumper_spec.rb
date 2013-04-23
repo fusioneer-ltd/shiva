@@ -39,7 +39,7 @@ describe Shiva::Dumper do
         subject { File.open(@database.schema_path,'r') }
 
         its(:read) { should match 'ActiveRecord::Schema.define' }
-        its(:read) { should match 'create_table "ponies", :force => true' }
+        its(:read) { should match 'create_table "ponies"' }
         its(:read) { should match 't.string "name"' }
         its(:read) { should_not match 't.string "race"' }
       end
@@ -55,7 +55,7 @@ describe Shiva::Dumper do
         subject { File.open(@database.schema_path,'r') }
 
         its(:read) { should match 'ActiveRecord::Schema.define' }
-        its(:read) { should match 'create_table "ponies", :force => true' }
+        its(:read) { should match 'create_table "ponies"' }
         its(:read) { should match 't.string "name"' }
         its(:read) { should match 't.string "race"' }
       end
