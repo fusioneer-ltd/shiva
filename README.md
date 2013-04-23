@@ -40,6 +40,14 @@ Now your migrations for Databases::Archive are defined in ```db/migrate/archive`
 
 You will also have several schema in ```db/schema```, in our exemple two names ```db/schema/archive_schema.rb``` and one named ```db/schema/old_db_archive.rb```.
 
+### Using migrations
+
+    rails generate shiva:migration database_name migration_name
+
+This generator descends from ActiveRecord generator, so you can do all fancy stuff you are already used to.
+
+The onyl thing you need to do is to provide database_name for Shiva migrator, so it knows which database should it use.
+
 ### Using rake
 
 To run the migrations for all you databases just run

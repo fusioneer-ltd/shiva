@@ -64,7 +64,7 @@ shiva_namespace = namespace :shiva do
     desc 'Load a schema.rb file into the database'
     task :load, [:database_name] => :environment do |_, args|
       apply_to_databases args do |database_configuration|
-        path = defined?(Rails) ? Rails.root : Dir.getwd
+        path = defined?(Rails) && Rails.respond_to?(:root) ? Rails.root : Dir.getwd
         file = ENV['SCHEMA'] || File.join(path, database_configuration.schema_path)
         if File.exists?(file)
           ActiveRecord::Base.establish_connection(database_configuration.base_model.connection.config)
@@ -80,7 +80,7 @@ shiva_namespace = namespace :shiva do
     # desc "Recreate the databases from the structure.sql file"
     task :load, [:database_name] => :environment do |_, args|
       apply_to_databases args do |database_configuration|
-        path = defined?(Rails) ? Rails.root : Dir.getwd
+        path = defined?(Rails) && Rails.respond_to?(:root) ? Rails.root : Dir.getwd
         filename = ENV['DB_STRUCTURE'] || File.join(path, database_configuration.structure_path)
         config = database_configuration.base_model.connection.config.with_indifferent_access
         if defined?(ActiveRecord::Tasks::DatabaseTasks)

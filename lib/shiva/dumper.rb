@@ -7,7 +7,7 @@ require 'shiva/legacy_tasks'
 module Shiva
   class Dumper
     def self.dump database
-      path = defined?(Rails) ? Rails.root : Dir.getwd
+      path = defined?(Rails) && Rails.respond_to?(:root) ? Rails.root : Dir.getwd
       case database.base_model.schema_format
       when :ruby
       then

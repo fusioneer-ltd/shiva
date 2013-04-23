@@ -15,6 +15,7 @@ dep = case ENV['rails']
 gem 'activesupport', dep
 gem 'activerecord', dep
 gem 'activemodel', dep
+gem 'railties', dep
 gem 'rspec'
 unless ENV['CI']
   gem 'simplecov', require: 'false'

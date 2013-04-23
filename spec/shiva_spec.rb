@@ -3,6 +3,7 @@
 describe Shiva do
   describe :configuration do
     it 'raises error without configuration' do
+      Shiva.instance_variable_set(:@configuration, nil)
       lambda {
         Shiva.configuration
       }.should raise_exception
