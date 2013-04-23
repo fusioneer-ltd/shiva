@@ -10,10 +10,10 @@ dep = case ENV['rails']
       when /(\d+\.)+\d+/ then "~> " + ENV['rails'].sub('rails-', '')
       else {github: 'rails/rails', branch: 'master'}
       end
-gem 'activesupport', dep.dup
-gem 'activerecord', dep.dup
-gem 'activemodel', dep.dup
-gem 'railties', dep.dup
+gem 'activesupport', dep && dep.dup
+gem 'activerecord', dep && dep.dup
+gem 'activemodel', dep && dep.dup
+gem 'railties', dep && dep.dup
 gem 'rspec'
 unless ENV['CI']
   gem 'simplecov', require: 'false'
