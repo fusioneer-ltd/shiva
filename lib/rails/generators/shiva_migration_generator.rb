@@ -1,6 +1,10 @@
 require 'rails/generators'
 require 'rails/generators/migration'
-require 'rails/generators/active_record/migration'
+begin
+  require 'rails/generators/active_record/migration'
+rescue LoadError
+  # do nothing, it's a Rails 3 file, if we're in Rails 4, we're fine
+end
 require 'rails/generators/active_record'
 require 'rails/generators/named_base'
 require 'rails/generators/rails/migration/migration_generator'
