@@ -25,4 +25,10 @@ describe Shiva::MigrationGenerator do
     described_class.start ["ponies", "add_coat_color_to_ponies"]
     Dir[File.join(File.dirname(__FILE__),'..', '..', 'tmp', 'migrations', 'ponies')].should_not be_empty
   end
+
+  it 'fails on no database found error' do
+    lambda {
+      described_class.start ["non_existing_database", "add_coat_color_to_ponies"]
+    }.should raise_error ArgumentError
+  end
 end
