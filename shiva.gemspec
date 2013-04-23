@@ -23,17 +23,18 @@ EOS
   gem.require_paths = ['lib']
 
   gem.add_dependency 'rake'
-  if ENV['RAILS_3_0']
+  case ENV['rails'] || (defined?(ActiveRecord::VERSION::STRING) && ActiveRecord::VERSION::STRING)
+  when /3\.0.\d+/
     gem.add_dependency 'activesupport', '~> 3.0.0'
     gem.add_dependency 'activerecord', '~> 3.0.0'
     gem.add_dependency 'activemodel', '~> 3.0.0'
     gem.add_dependency 'railties', '~> 3.0.0'
-  elsif ENV['RAILS_3_1']
+  when /3\.1.\d+/
     gem.add_dependency 'activesupport', '~> 3.1.0'
     gem.add_dependency 'activerecord', '~> 3.1.0'
     gem.add_dependency 'activemodel', '~> 3.1.0'
     gem.add_dependency 'railties', '~> 3.1.0'
-  elsif ENV['RAILS_3_2']
+  when /3\.2.\d+/
     gem.add_dependency 'activesupport', '~> 3.2.0'
     gem.add_dependency 'activerecord', '~> 3.2.0'
     gem.add_dependency 'activemodel', '~> 3.2.0'
