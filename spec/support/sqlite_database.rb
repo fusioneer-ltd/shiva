@@ -1,15 +1,36 @@
 # -*- encoding : utf-8 -*-
-module SqliteDatabase
+module DatabaseHelper
   module Extends
-    def use_sqlite_database(database_name)
-      before :each do
-        FileUtils.cp fixture_sqlite_database_file_path(database_name), tmp_sqlite_database_file_path(database_name)
+    case ENV['DB']
+    when /sqlite/
+      def use_database(database_name)
+        before :each do
+          FileUtils.cp fixture_sqlite_database_file_path(database_name), tmp_sqlite_database_file_path(database_name)
+        end
       end
-    end
 
-    def remove_sqlite_database(database_name)
-      before :each do
-        FileUtils.rm(tmp_sqlite_database_file_path(database_name), force: true)
+      def remove_database(database_name)
+        before :each do
+          FileUtils.rm(tmp_sqlite_database_file_path(database_name), force: true)
+        end
+      end
+    else
+      def use_database(database_name)
+        before :each do
+          silence_active_record do
+            ActiveRecord::Base.establish_connection(ENV['DB'])
+            drop_statement = "DROP TABLE #{'IF EXISTS ' unless ENV['DB'] =~ /mssql/}#{ActiveRecord::Base.connection.quote_table_name(database_name)}"
+            ActiveRecord::Base.connection.execute(drop_statement)
+            load(File.join(SCHEMA_ROOT, 'ponies_schema.rb'))
+          end
+        end
+      end
+
+      def remove_database(database_name)
+        before :each do
+          ActiveRecord::Base.establish_connection($database[ENV['DB']])
+          ActiveRecord::Base.connection.execute("DROP TABLE #{'IF EXISTS ' unless ENV['DB'] =~ /mssql/}#{database_name}")
+        end
       end
     end
   end
@@ -39,6 +60,6 @@ module SqliteDatabase
 end
 
 RSpec.configure do |config|
-  config.extend SqliteDatabase::Extends
-  config.include SqliteDatabase::Includes
+  config.extend DatabaseHelper::Extends
+  config.include DatabaseHelper::Includes
 end

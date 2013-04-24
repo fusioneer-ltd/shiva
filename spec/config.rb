@@ -6,13 +6,56 @@ MIGRATIONS_ROOT = SPEC_ROOT + '/migrations'
 SCHEMA_ROOT     = SPEC_ROOT + '/schema'
 VERBOSE ||= false
 
-if defined?(JRUBY_VERSION)
-  require 'jdbc/sqlite3'
-  Jdbc::SQLite3.load_driver if Jdbc::SQLite3.respond_to?(:load_driver)
+def require_default(database, adapter)
+  if database[adapter] && database[adapter]['adapter']
+    require database[adapter]['adapter']
+  else
+    require adapter
+  end
+end
 
-  SQLITE_ADAPTER = 'jdbcsqlite3'
+if File.exists?(File.dirname(__FILE__) + '/database.yml')
+  require 'yaml'
+  database = YAML::load(IO.read(File.dirname(__FILE__) + '/database.yml'))
+  adapter = ENV['DB'] || 'mysql'
+  if defined?(JRUBY_VERSION)
+    case adapter
+    when 'mssql'
+      #require 'activerecord-jdbc-adapter'
+      require 'jdbc/jtds'
+      Jdbc::JTDS.load_driver if Jdbc::JTDS.respond_to?(:load_driver)
+    when 'sqlite'
+      require 'jdbc/sqlite3'
+      Jdbc::SQLite3.load_driver if Jdbc::SQLite3.respond_to?(:load_driver)
+
+      adapter = 'jdbcsqlite'
+    else
+      require_default(database, adapter)
+    end
+  else
+    case adapter
+    when 'mysql'
+      require 'mysql2'
+    when 'postgresql'
+      require 'pg'
+    else
+      require_default(database, adapter)
+    end
+  end
+  require 'active_record'
+  require 'active_support'
+  ActiveRecord::Base.configurations.update database
+  AR_ADAPTER = adapter
 else
-  require 'sqlite3'
+  if defined?(JRUBY_VERSION)
+    require 'jdbc/sqlite3'
+    Jdbc::SQLite3.load_driver if Jdbc::SQLite3.respond_to?(:load_driver)
 
-  SQLITE_ADAPTER = 'sqlite3'
+    sqlite_adapter = 'jdbcsqlite3'
+  else
+    require 'sqlite3'
+
+    sqlite_adapter = 'sqlite3'
+  end
+  AR_ADAPTER = {adapter: sqlite_adapter, database: File.join(SPEC_ROOT, 'tmp', 'ponies.sqlite')}
 end

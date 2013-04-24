@@ -1,0 +1,15 @@
+mysql:
+  adapter: mysql2
+  database: shiva_test
+  username: root
+  encoding: utf8
+postgresql:
+  adapter: postgresql
+  database: shiva_test
+  username: postgres
+sqlite:
+  adapter: sqlite3
+  database: :memory:
+jdbcsqlite:
+  adapter: jdbcsqlite3
+  database: :memory:

@@ -31,7 +31,7 @@ describe Shiva::Dumper do
     describe :dump do
       context 'without previous migrations' do
         # Never use checked-in files, always use copies!
-        use_sqlite_database 'ponies'
+        use_database 'ponies'
         before do
           @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
           Shiva::Dumper.dump(@database)
@@ -46,7 +46,7 @@ describe Shiva::Dumper do
 
       context 'with previous migrations' do
         # Never use checked-in files, always use copies!
-        use_sqlite_database 'ponies'
+        use_database 'ponies'
         before do
           @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
           Shiva::Migrator.migrate @database
@@ -69,7 +69,7 @@ describe Shiva::Dumper do
     describe :dump do
       context 'without previous migrations' do
         # Never use checked-in files, always use copies!
-        use_sqlite_database 'ponies'
+        use_database 'ponies'
         before do
           @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
           Shiva::Dumper.dump(@database)
@@ -83,7 +83,7 @@ describe Shiva::Dumper do
 
       context 'with previous migrations' do
         # Never use checked-in files, always use copies!
-        use_sqlite_database 'ponies'
+        use_database 'ponies'
         before do
           @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
           Shiva::Migrator.migrate @database

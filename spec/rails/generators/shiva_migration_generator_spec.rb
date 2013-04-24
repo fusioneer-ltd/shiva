@@ -12,7 +12,7 @@ module ShivaSpec
 end
 describe Shiva::MigrationGenerator do
 
-  use_sqlite_database 'ponies'
+  use_database 'ponies'
   before do
     Shiva.configure do
       @databases << ShivaSpec::ShivaMigrationDatabase.new('Pony', 'ponies')

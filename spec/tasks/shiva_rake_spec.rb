@@ -95,7 +95,7 @@ describe 'shiva namespace rake task' do
   end
 
   context 'with configuration' do
-    use_sqlite_database 'ponies'
+    use_database 'ponies'
     before :each do
       @database = ShivaSpec::ShivaRakeDatabase.new('Pony', 'ponies')
       Shiva.configure do
@@ -181,7 +181,7 @@ describe 'shiva namespace rake task' do
                          File.join(SPEC_ROOT, 'tmp', 'ponies_schema.rb'))
             Pony.connection.disconnect!
           end
-          remove_sqlite_database('ponies')
+          remove_database('ponies')
 
           let :run_rake_task do
             silence_active_record do
@@ -223,7 +223,7 @@ describe 'shiva namespace rake task' do
     context 'shiva:structure' do
       describe 'load' do
         context 'with an existing file' do
-          use_sqlite_database('ponies')
+          use_database('ponies')
 
           before do
             @database = ShivaSpec::ShivaRakeDatabase.new('Pony', 'ponies')

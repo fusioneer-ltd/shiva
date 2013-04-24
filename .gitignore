@@ -18,3 +18,4 @@ tmp
 .rvmrc
 # Ignore IDEs configuration files
 .idea
+spec/database.yml

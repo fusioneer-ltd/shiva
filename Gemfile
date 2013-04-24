@@ -19,10 +19,29 @@ unless ENV['CI']
   gem 'simplecov', require: 'false'
 end
 if defined?(JRUBY_VERSION)
-  gem 'jdbc-sqlite3'
-  gem 'activerecord-jdbc-adapter', github: 'jruby/activerecord-jdbc-adapter'
-  gem 'activerecord-jdbcsqlite3-adapter', github: 'jruby/activerecord-jdbc-adapter'
-  gem 'jdbc-jtds'
+  case ENV['DB']
+  when /mssql/
+    gem 'activerecord-jdbc-adapter'
+    gem 'activerecord-jdbcmssql-adapter'
+    gem 'jdbc-jtds'
+  when /^(mysql|postgresql)$/
+    gem 'activerecord-jdbc-adapter', github: 'jruby/activerecord-jdbc-adapter'
+    gem "activerecord-jdbc#{ENV['DB']}-adapter", github: 'jruby/activerecord-jdbc-adapter'
+  else
+    gem 'jdbc-sqlite3'
+    gem 'activerecord-jdbc-adapter', github: 'jruby/activerecord-jdbc-adapter'
+    gem 'activerecord-jdbcsqlite3-adapter', github: 'jruby/activerecord-jdbc-adapter'
+  end
 else
+  case ENV['DB']
+  when /mssql/
+    gem 'activerecord-sqlserver-adapter', github: 'jruby/activerecord-jdbc-adapter'
+  when /mysql/
+    gem 'mysql2'
+  when /postgres/
+    gem 'pg'
+  else
+    gem 'sqlite3'
+  end
   gem 'sqlite3'
 end
