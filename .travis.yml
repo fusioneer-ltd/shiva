@@ -132,64 +132,64 @@ matrix:
     - rvm: jruby-19mode
       env: rails=master DB=postgres
       jdk: oraclejdk7
-allow_failures:
-  - rvm: 1.9.3
-    env: rails=3.0.0 DB=sqlite
-  - rvm: rbx-19mode
-    env: rails=3.0.0 DB=sqlite
-  - rvm: ruby-head
-    env: rails=3.0.0 DB=sqlite
-  - rvm: 1.9.3
-    env: rails=3.1.0 DB=sqlite
-  - rvm: rbx-19mode
-    env: rails=3.1.0 DB=sqlite
-  - rvm: ruby-head
-    env: rails=3.1.0 DB=sqlite
-  - rvm: 1.9.3
-    env: rails=3.2.0 DB=sqlite
-  - rvm: rbx-19mode
-    env: rails=3.2.0 DB=sqlite
-  - rvm: ruby-head
-    env: rails=3.2.0 DB=sqlite
-  - rvm: 1.9.3
-    env: rails=master DB=sqlite
-  - rvm: rbx-19mode
-    env: rails=master DB=sqlite
-  - rvm: ruby-head
-    env: rails=master DB=sqlite
-  - rvm: jruby-19mode
-    env: rails=3.0.0 DB=sqlite
-    jdk: openjdk6
-  - rvm: jruby-19mode
-    env: rails=3.0.0 DB=sqlite
-    jdk: openjdk7
-  - rvm: jruby-19mode
-    env: rails=3.0.0 DB=sqlite
-    jdk: oraclejdk7
-  - rvm: jruby-19mode
-    env: rails=3.1.0 DB=sqlite
-    jdk: openjdk6
-  - rvm: jruby-19mode
-    env: rails=3.1.0 DB=sqlite
-    jdk: openjdk7
-  - rvm: jruby-19mode
-    env: rails=3.1.0 DB=sqlite
-    jdk: oraclejdk7
-  - rvm: jruby-19mode
-    env: rails=3.2.0 DB=sqlite
-    jdk: openjdk6
-  - rvm: jruby-19mode
-    env: rails=3.2.0 DB=sqlite
-    jdk: openjdk7
-  - rvm: jruby-19mode
-    env: rails=3.2.0 DB=sqlite
-    jdk: oraclejdk7
-  - rvm: jruby-19mode
-    env: rails=master DB=sqlite
-    jdk: openjdk6
-  - rvm: jruby-19mode
-    env: rails=master DB=sqlite
-    jdk: openjdk7
-  - rvm: jruby-19mode
-    env: rails=master DB=sqlite
-    jdk: oraclejdk7
+  allow_failures:
+    - rvm: 1.9.3
+      env: rails=3.0.0 DB=sqlite
+    - rvm: rbx-19mode
+      env: rails=3.0.0 DB=sqlite
+    - rvm: ruby-head
+      env: rails=3.0.0 DB=sqlite
+    - rvm: 1.9.3
+      env: rails=3.1.0 DB=sqlite
+    - rvm: rbx-19mode
+      env: rails=3.1.0 DB=sqlite
+    - rvm: ruby-head
+      env: rails=3.1.0 DB=sqlite
+    - rvm: 1.9.3
+      env: rails=3.2.0 DB=sqlite
+    - rvm: rbx-19mode
+      env: rails=3.2.0 DB=sqlite
+    - rvm: ruby-head
+      env: rails=3.2.0 DB=sqlite
+    - rvm: 1.9.3
+      env: rails=master DB=sqlite
+    - rvm: rbx-19mode
+      env: rails=master DB=sqlite
+    - rvm: ruby-head
+      env: rails=master DB=sqlite
+    - rvm: jruby-19mode
+      env: rails=3.0.0 DB=sqlite
+      jdk: openjdk6
+    - rvm: jruby-19mode
+      env: rails=3.0.0 DB=sqlite
+      jdk: openjdk7
+    - rvm: jruby-19mode
+      env: rails=3.0.0 DB=sqlite
+      jdk: oraclejdk7
+    - rvm: jruby-19mode
+      env: rails=3.1.0 DB=sqlite
+      jdk: openjdk6
+    - rvm: jruby-19mode
+      env: rails=3.1.0 DB=sqlite
+      jdk: openjdk7
+    - rvm: jruby-19mode
+      env: rails=3.1.0 DB=sqlite
+      jdk: oraclejdk7
+    - rvm: jruby-19mode
+      env: rails=3.2.0 DB=sqlite
+      jdk: openjdk6
+    - rvm: jruby-19mode
+      env: rails=3.2.0 DB=sqlite
+      jdk: openjdk7
+    - rvm: jruby-19mode
+      env: rails=3.2.0 DB=sqlite
+      jdk: oraclejdk7
+    - rvm: jruby-19mode
+      env: rails=master DB=sqlite
+      jdk: openjdk6
+    - rvm: jruby-19mode
+      env: rails=master DB=sqlite
+      jdk: openjdk7
+    - rvm: jruby-19mode
+      env: rails=master DB=sqlite
+      jdk: oraclejdk7
