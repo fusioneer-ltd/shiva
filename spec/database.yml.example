@@ -9,7 +9,7 @@ postgresql:
   username: postgres
 sqlite:
   adapter: sqlite3
-  database: :memory:
+  database: ':memory:'
 jdbcsqlite:
   adapter: jdbcsqlite3
-  database: :memory:
+  database: ':memory:'
