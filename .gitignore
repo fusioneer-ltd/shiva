@@ -15,8 +15,6 @@ spec/reports
 test/tmp
 test/version_tmp
 tmp
-
+.rvmrc
 # Ignore IDEs configuration files
-hermes.sublime-project
-hermes.sublime-workspace
 .idea
