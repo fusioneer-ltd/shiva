@@ -1,7 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'rubygems'
 require 'simplecov_helper'
-require 'lib/shiva'
+require File.join(File.dirname(__FILE__), '..', 'lib' ,'shiva')
 require 'config'
 
 # Requires supporting ruby files with custom matchers and macros, etc,
