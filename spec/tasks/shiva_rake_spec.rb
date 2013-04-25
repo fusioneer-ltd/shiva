@@ -199,10 +199,10 @@ describe 'shiva namespace rake task' do
 
           it 'runs!' do
             Pony.establish_connection(AR_ADAPTER)
-            Pony.clear_cache!
+            Pony.reset_column_information
             Pony.should_not be_table_exists
             run_rake_task
-            Pony.clear_cache!
+            Pony.reset_column_information
             Pony.should be_table_exists
             Pony.columns.map(&:name).should include 'id', 'name'
           end
@@ -250,7 +250,7 @@ describe 'shiva namespace rake task' do
           end
 
           it 'runs!' do
-            Pony.clear_cache!
+            Pony.reset_column_information
             begin
               run_rake_task
             rescue ActiveRecord::Tasks::DatabaseNotSupported, Shiva::TaskNotSupportedError => e

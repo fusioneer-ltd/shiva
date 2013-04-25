@@ -79,7 +79,7 @@ describe Shiva::Migrator do
         database = ShivaSpec::MigratorDatabase.new('Pony', 'ponies')
         Shiva::Migrator.migrate database
         Shiva::Migrator.rollback database, 1
-        Pony.clear_cache!
+        Pony.reset_column_information
       end
 
       subject { Pony.columns.map(&:name) }
@@ -95,7 +95,7 @@ describe Shiva::Migrator do
         database = ShivaSpec::MigratorDatabase.new('Pony', 'ponies')
         Shiva::Migrator.migrate database
         Shiva::Migrator.rollback database, 2
-        Pony.clear_cache!
+        Pony.reset_column_information
       end
 
       subject { Pony }
