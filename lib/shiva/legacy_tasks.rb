@@ -1,6 +1,9 @@
 module Shiva
   class LegacyTasks
 
+    # poor, poor Rails 3...
+
+
     # ActiveRecord 3 structure load task
     def self.structure_load(database, filename)
       config = database.base_model.connection.config.with_indifferent_access
@@ -27,7 +30,7 @@ module Shiva
         db_string = firebird_db_string(config)
         sh "isql -i #{filename} #{db_string}"
       else
-        raise "Task not supported by '#{config['adapter']}'"
+        raise TaskNotSupportedError.new("Task not supported by '#{config['adapter']}'")
       end
     end
 
@@ -56,26 +59,30 @@ module Shiva
         db_string = firebird_db_string(config)
         FileUtils.sh "isql -a #{db_string} > #{filename}"
       else
-        raise "Task not supported by '#{config['adapter']}'"
+        raise TaskNotSupportedError.new("Task not supported by '#{config['adapter']}'")
       end
     end
 
     protected
 
-    def set_firebird_env(config)
+    def self.set_firebird_env(config)
       ENV['ISC_USER']     = config['username'].to_s if config['username']
       ENV['ISC_PASSWORD'] = config['password'].to_s if config['password']
     end
 
-    def firebird_db_string(config)
+    def self.firebird_db_string(config)
       FireRuby::Database.db_string_for(config.symbolize_keys)
     end
 
-    def set_psql_env(config)
+    def self.set_psql_env(config)
       ENV['PGHOST']     = config['host']          if config['host']
       ENV['PGPORT']     = config['port'].to_s     if config['port']
       ENV['PGPASSWORD'] = config['password'].to_s if config['password']
       ENV['PGUSER']     = config['username'].to_s if config['username']
     end
   end
+
+  class TaskNotSupportedError < StandardError
+  end
+
 end

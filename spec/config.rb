@@ -27,8 +27,7 @@ if File.exists?(File.dirname(__FILE__) + '/database.yml')
     when 'sqlite'
       require 'jdbc/sqlite3'
       Jdbc::SQLite3.load_driver if Jdbc::SQLite3.respond_to?(:load_driver)
-
-      adapter = 'jdbcsqlite'
+      adapter = 'jdbcsqlite3'
     else
       require_default(database, adapter)
     end
@@ -45,7 +44,12 @@ if File.exists?(File.dirname(__FILE__) + '/database.yml')
   require 'active_record'
   require 'active_support'
   ActiveRecord::Base.configurations.update database
-  AR_ADAPTER = adapter
+  case adapter
+  when /sqlite/
+    AR_ADAPTER = {adapter: adapter, database: File.join(SPEC_ROOT, 'tmp', 'ponies.sqlite')}
+  else
+    AR_ADAPTER = adapter
+  end
 else
   if defined?(JRUBY_VERSION)
     require 'jdbc/sqlite3'

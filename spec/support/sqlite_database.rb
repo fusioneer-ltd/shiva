@@ -11,7 +11,7 @@ module DatabaseHelper
 
       def remove_database(database_name)
         before :each do
-          FileUtils.rm(tmp_sqlite_database_file_path(database_name), force: true)
+          FileUtils.rm(tmp_sqlite_database_file_path(database_name), force: true, verbose: ENV['verbose'].present?)
         end
       end
     else
@@ -21,16 +21,12 @@ module DatabaseHelper
             ActiveRecord::Base.establish_connection(ENV['DB'])
             drop_statement = "DROP TABLE #{'IF EXISTS ' unless ENV['DB'] =~ /mssql/}#{ActiveRecord::Base.connection.quote_table_name(database_name)}"
             ActiveRecord::Base.connection.execute(drop_statement)
-            load(File.join(SCHEMA_ROOT, 'ponies_schema.rb'))
+            load(File.join(SCHEMA_ROOT, "#{database_name}_schema.rb"))
           end
         end
       end
 
       def remove_database(database_name)
-        before :each do
-          ActiveRecord::Base.establish_connection($database[ENV['DB']])
-          ActiveRecord::Base.connection.execute("DROP TABLE #{'IF EXISTS ' unless ENV['DB'] =~ /mssql/}#{database_name}")
-        end
       end
     end
   end
@@ -39,7 +35,7 @@ module DatabaseHelper
 
     def silence_active_record(&block)
       arm = ActiveRecord::Migration.verbose
-      ActiveRecord::Migration.verbose = false
+      ActiveRecord::Migration.verbose = false unless ENV['verbose']
       yield
     ensure
       ActiveRecord::Migration.verbose = arm

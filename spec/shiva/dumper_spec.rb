@@ -22,6 +22,13 @@ module ShivaSpec
     end
   end
 end
+
+unless defined?(Rails)
+  module Rails
+    def self.root; Dir.getwd; end
+  end
+end
+
 describe Shiva::Dumper do
 
   context 'schema_format is :ruby' do
@@ -33,8 +40,12 @@ describe Shiva::Dumper do
         # Never use checked-in files, always use copies!
         use_database 'ponies'
         before do
-          @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
-          Shiva::Dumper.dump(@database)
+          begin
+            @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
+            Shiva::Dumper.dump(@database)
+          rescue ActiveRecord::Tasks::DatabaseNotSupported, Shiva::TaskNotSupportedError => e
+            pending e.message
+          end
         end
         subject { File.open(@database.schema_path,'r') }
 
@@ -48,9 +59,13 @@ describe Shiva::Dumper do
         # Never use checked-in files, always use copies!
         use_database 'ponies'
         before do
-          @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
-          Shiva::Migrator.migrate @database
-          Shiva::Dumper.dump(@database)
+          begin
+            @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
+            Shiva::Migrator.migrate @database
+            Shiva::Dumper.dump(@database)
+          rescue ActiveRecord::Tasks::DatabaseNotSupported, Shiva::TaskNotSupportedError => e
+            pending e.message
+          end
         end
         subject { File.open(@database.schema_path,'r') }
 
@@ -64,6 +79,7 @@ describe Shiva::Dumper do
 
   context 'schema_format is :sql' do
     before do
+      Rails.should_receive(:root).any_number_of_times.and_return(Dir.getwd)
       Pony.should_receive(:schema_format).and_return(:sql)
     end
     describe :dump do
@@ -71,8 +87,12 @@ describe Shiva::Dumper do
         # Never use checked-in files, always use copies!
         use_database 'ponies'
         before do
-          @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
-          Shiva::Dumper.dump(@database)
+          begin
+            @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
+            Shiva::Dumper.dump(@database)
+          rescue ActiveRecord::Tasks::DatabaseNotSupported, Shiva::TaskNotSupportedError => e
+            pending e.message
+          end
         end
         subject { File.open(@database.structure_path,'r') }
 
@@ -85,9 +105,13 @@ describe Shiva::Dumper do
         # Never use checked-in files, always use copies!
         use_database 'ponies'
         before do
-          @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
-          Shiva::Migrator.migrate @database
-          Shiva::Dumper.dump(@database)
+          begin
+            @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
+            Shiva::Migrator.migrate @database
+            Shiva::Dumper.dump(@database)
+          rescue ActiveRecord::Tasks::DatabaseNotSupported, Shiva::TaskNotSupportedError => e
+            pending e.message
+          end
         end
         subject { File.open(@database.structure_path,'r') }
 
