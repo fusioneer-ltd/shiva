@@ -18,15 +18,24 @@ module DatabaseHelper
       def use_database(database_name)
         before :each do
           silence_active_record do
-            ActiveRecord::Base.establish_connection(ENV['DB'])
-            drop_statement = "DROP TABLE #{'IF EXISTS ' unless ENV['DB'] =~ /mssql/}#{ActiveRecord::Base.connection.quote_table_name(database_name)}"
-            ActiveRecord::Base.connection.execute(drop_statement)
-            load(File.join(SCHEMA_ROOT, "#{database_name}_schema.rb"))
+            require 'shiva/database'
+            require 'shiva/migrator'
+            database = Shiva::Database.new(database_name.classify.singularize, database_name.tableize)
+            Shiva::Migrator.migrate(database)
+            Shiva::Migrator.rollback(database, 1)
           end
         end
       end
 
       def remove_database(database_name)
+        before :each do
+          silence_active_record do
+            require 'shiva/database'
+            require 'shiva/migrator'
+            database = Shiva::Database.new(database_name.classify.singularize, database_name.tableize)
+            Shiva::Migrator.rollback(database, 4)
+          end
+        end
       end
     end
   end

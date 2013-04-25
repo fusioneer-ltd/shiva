@@ -33,10 +33,12 @@ if File.exists?(File.dirname(__FILE__) + '/database.yml')
     end
   else
     case adapter
-    when 'mysql'
+    when /mysql/
       require 'mysql2'
-    when 'postgresql'
+    when /postgres/
       require 'pg'
+    when /sqlite/
+      require (adapter = 'sqlite3')
     else
       require_default(database, adapter)
     end
