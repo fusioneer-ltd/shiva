@@ -2,7 +2,7 @@
 require 'rake'
 require 'active_record'
 require 'models/pony'
-require 'lib/shiva/dumper'
+require 'shiva/dumper'
 module ShivaSpec
   class ShivaRakeDatabase < Shiva::Database
     def migration_path
