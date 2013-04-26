@@ -3,25 +3,6 @@ require 'shiva/migrator'
 require 'shiva/dumper'
 require 'active_record'
 require 'models/pony'
-module ShivaSpec
-  class DumperDatabase < Shiva::Database
-    def migration_path
-      "spec/migrations/#{name}/"
-    end
-
-    def schema_path
-      "spec/tmp/#{name}_schema.rb"
-    end
-
-    def structure_path
-      "spec/tmp/#{name}_structure.sql"
-    end
-
-    def seeds_path
-      "spec/seeds/#{name}.rb"
-    end
-  end
-end
 
 unless defined?(Rails)
   module Rails

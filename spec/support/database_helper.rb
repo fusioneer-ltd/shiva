@@ -1,4 +1,24 @@
 # -*- encoding : utf-8 -*-
+require 'shiva/database'
+module ShivaSpec
+  class DumperDatabase < Shiva::Database
+    def migration_path
+      "spec/migrations/#{name}/"
+    end
+
+    def schema_path
+      "spec/tmp/#{name}_schema.rb"
+    end
+
+    def structure_path
+      "spec/tmp/#{name}_structure.sql"
+    end
+
+    def seeds_path
+      "spec/seeds/#{name}.rb"
+    end
+  end
+end
 module DatabaseHelper
   module Extends
     case ENV['DB']
@@ -20,7 +40,7 @@ module DatabaseHelper
           silence_active_record do
             require 'shiva/database'
             require 'shiva/migrator'
-            database = Shiva::Database.new(database_name.classify.singularize, database_name.tableize)
+            database = ShivaSpec::DumperDatabase.new(database_name.classify.singularize, database_name.tableize)
             Shiva::Migrator.migrate(database)
             Shiva::Migrator.rollback(database, 1)
           end
@@ -32,8 +52,8 @@ module DatabaseHelper
           silence_active_record do
             require 'shiva/database'
             require 'shiva/migrator'
-            database = Shiva::Database.new(database_name.classify.singularize, database_name.tableize)
-            Shiva::Migrator.rollback(database, 4)
+            database = ShivaSpec::DumperDatabase.new(database_name.classify.singularize, database_name.tableize)
+            Shiva::Migrator.rollback(database, 0)
           end
         end
       end
