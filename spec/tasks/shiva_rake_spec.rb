@@ -228,34 +228,36 @@ describe 'shiva namespace rake task' do
     end
 
     context 'shiva:structure' do
-      describe 'load' do
-        context 'with an existing file' do
-          use_database('ponies')
+      describe :load do
+        use_database('ponies')
 
-          before do
-            catch_no_support do
-              Rails.should_receive(:root).any_number_of_times.and_return(Dir.getwd)
-              @database = ShivaSpec::ShivaRakeDatabase.new('Pony', 'ponies')
-              Shiva::Dumper.dump(@database)
-            end
+        before do
+          catch_no_support do
+            Rails.should_receive(:root).any_number_of_times.and_return(Dir.getwd)
+            Pony.should_receive(:schema_format).and_return(:sql)
+            @database = ShivaSpec::ShivaRakeDatabase.new('Pony', 'ponies')
+            Shiva::Dumper.dump(@database)
           end
+        end
 
-          let :run_rake_task do
-            silence_active_record do
-              Rake::Task['shiva:structure:load'].reenable
-              Rake.application.invoke_task 'shiva:structure:load'
-            end
-          end
+        drop_database('ponies')
 
-          it 'runs!' do
-            Pony.reset_column_information
-            catch_no_support do
-              run_rake_task
-            end
-            Pony.reset_column_information
-            Pony.should be_table_exists
-            Pony.columns.map(&:name).should include 'id', 'name'
+        let :run_rake_task do
+          silence_active_record do
+            Rake::Task['shiva:structure:load'].reenable
+            Rake.application.invoke_task 'shiva:structure:load'
           end
+        end
+
+        it 'runs!' do
+          Pony.reset_column_information
+          catch_no_support do
+            run_rake_task
+          end
+          Pony.establish_connection(AR_ADAPTER)
+          Pony.reset_column_information
+          Pony.should be_table_exists
+          Pony.columns.map(&:name).should include 'id', 'name'
         end
       end
     end

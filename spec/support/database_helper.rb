@@ -34,6 +34,8 @@ module DatabaseHelper
           FileUtils.rm(tmp_sqlite_database_file_path(database_name), force: true, verbose: ENV['verbose'].present?)
         end
       end
+
+      def drop_database(database_name); remove_database(database_name); end
     else
       def use_database(database_name)
         before :each do
@@ -58,6 +60,23 @@ module DatabaseHelper
           end
         end
       end
+
+      def drop_database(database_name)
+        before :each do
+          database = ShivaSpec::DumperDatabase.new(database_name.classify.singularize, database_name.tableize)
+          case database.config['adapter']
+          when /mysql/
+            ActiveRecord::Base.establish_connection(database.config)
+            ActiveRecord::Base.connection.recreate_database database.config['database']
+          when /postgresql/
+            database.base_model.connection.disconnect!
+            ActiveRecord::Base.establish_connection(database.config.merge('database' => 'postgres', 'schema_search_path' => 'public'))
+            ActiveRecord::Base.connection.recreate_database database.config['database']
+            ActiveRecord::Base.connection.disconnect!
+            database.base_model.establish_connection(database.config)
+          end
+        end
+     end
     end
   end
 
