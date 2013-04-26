@@ -8,6 +8,7 @@ module Shiva
   class Dumper
     def self.dump database
       path = defined?(Rails) && Rails.respond_to?(:root) ? Rails.root : Dir.getwd
+      database.base_model.reset_column_information
       case database.base_model.schema_format
       when :ruby
       then

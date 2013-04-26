@@ -200,6 +200,8 @@ describe 'shiva namespace rake task' do
             Pony.reset_column_information
             Pony.should_not be_table_exists
             run_rake_task
+            # we have to reconnect again
+            Pony.establish_connection(AR_ADAPTER)
             Pony.reset_column_information
             Pony.should be_table_exists
             Pony.columns.map(&:name).should include 'id', 'name'
