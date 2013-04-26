@@ -7,4 +7,7 @@ class AddRace < ActiveRecord::Migration
   def self.down
     remove_column :ponies, :race
   end
+
+  def up; self.class.up; end
+  def down; self.class.down; end
 end

@@ -53,6 +53,7 @@ module DatabaseHelper
             require 'shiva/database'
             require 'shiva/migrator'
             database = ShivaSpec::DumperDatabase.new(database_name.classify.singularize, database_name.tableize)
+            Shiva::Migrator.migrate(database)
             Shiva::Migrator.rollback(database, 0)
           end
         end
