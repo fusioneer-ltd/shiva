@@ -40,7 +40,11 @@ else
   when /mssql/
     gem 'activerecord-sqlserver-adapter', github: 'jruby/activerecord-jdbc-adapter'
   when /mysql/
-    gem 'mysql2'
+    mysql_version = case ENV['rails']
+    when /3\.0\./ then '<0.3' # poor Rails 3.0 can't handle new mysql2 gem :(
+    else nil
+    end
+    gem 'mysql2', mysql_version
   when /postgres/
     gem 'pg'
   else
