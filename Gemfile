@@ -24,9 +24,12 @@ if defined?(JRUBY_VERSION)
     gem 'activerecord-jdbc-adapter'
     gem 'activerecord-jdbcmssql-adapter'
     gem 'jdbc-jtds'
-  when /^(mysql|postgres)$/
+  when /mysql/
     gem 'activerecord-jdbc-adapter', github: 'jruby/activerecord-jdbc-adapter'
-    gem "activerecord-jdbc#{ENV['DB']}-adapter", github: 'jruby/activerecord-jdbc-adapter'
+    gem "activerecord-jdbcmysql-adapter", github: 'jruby/activerecord-jdbc-adapter'
+  when /postgres/
+    gem 'activerecord-jdbc-adapter', github: 'jruby/activerecord-jdbc-adapter'
+    gem "activerecord-jdbcpostgresql-adapter", github: 'jruby/activerecord-jdbc-adapter'
   else
     gem 'jdbc-sqlite3'
     gem 'activerecord-jdbc-adapter', github: 'jruby/activerecord-jdbc-adapter'
