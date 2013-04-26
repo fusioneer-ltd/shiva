@@ -23,6 +23,14 @@ module Shiva
       base_model_name.constantize
     end
 
+    def config
+      if base_model.connection.respond_to?(:config)
+        base_model.connection.config.with_indifferent_access
+      elsif base_model.connection.instance_variable_defined?(:@config)
+        base_model.connection.instance_variable_get(:@config).with_indifferent_access
+      end
+    end
+
     private
     def initialize base_model, name
       self.base_model_name = base_model
