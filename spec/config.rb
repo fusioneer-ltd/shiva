@@ -28,6 +28,14 @@ if File.exists?(File.dirname(__FILE__) + '/database.yml')
       require 'jdbc/sqlite3'
       Jdbc::SQLite3.load_driver if Jdbc::SQLite3.respond_to?(:load_driver)
       adapter = 'jdbcsqlite3'
+    when /mysql/
+      require 'jdbc/mysql'
+      Jdbc::MySQL.load_driver(:require) if Jdbc::MySQL.respond_to?(:load_driver)
+      adapter = 'jdbcmysql'
+    when /postgres/
+      require 'jdbc/postgres'
+      Jdbc::Postgres.load_driver(:require) if Jdbc::Postgres.respond_to?(:load_driver)
+      adapter = 'jdbcpostgresql'
     else
       require_default(database, adapter)
     end

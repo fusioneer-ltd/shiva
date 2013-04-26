@@ -7,6 +7,15 @@ postgresql:
   adapter: postgresql
   database: shiva_test
   username: postgres
+jdbcmysql:
+  adapter: jdbcmysql
+  database: shiva_test
+  username: root
+  encoding: utf8
+jdbcpostgresql:
+  adapter: jdbcpostgresql
+  database: shiva_test
+  username: postgres
 sqlite:
   adapter: sqlite3
   database: ':memory:'
