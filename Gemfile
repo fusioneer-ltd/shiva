@@ -54,4 +54,3 @@ else
   end
   gem 'sqlite3'
 end
-gem 'pry'
