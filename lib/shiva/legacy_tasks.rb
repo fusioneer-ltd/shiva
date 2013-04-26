@@ -6,7 +6,7 @@ module Shiva
 
     # ActiveRecord 3 structure load task
     def self.structure_load(database, filename)
-      config = database.base_model.connection.config.with_indifferent_access
+      config = database.config
       case config['adapter']
       when /mysql/
         database.base_model.connection.execute('SET foreign_key_checks = 0')
@@ -36,7 +36,7 @@ module Shiva
 
     # ActiveRecord 3 structure dump task
     def self.structure_dump(database, filename)
-      config = database.base_model.connection.config.with_indifferent_access
+      config = database.config
       case config['adapter']
       when /mysql/, 'oci', 'oracle'
         database.base_model.establish_connection(config)
