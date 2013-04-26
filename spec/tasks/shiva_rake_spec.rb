@@ -67,11 +67,9 @@ describe 'shiva namespace rake task' do
       end
 
       it 'runs!' do
-        begin
+        catch_no_support do
           Shiva.configuration.should_receive(:_databases).and_return([])
           run_rake_task
-        rescue ActiveRecord::Tasks::DatabaseNotSupported, Shiva::TaskNotSupportedError => e
-          pending e.message
         end
       end
     end
@@ -233,12 +231,10 @@ describe 'shiva namespace rake task' do
           use_database('ponies')
 
           before do
-            begin
+            catch_no_support do
               Rails.should_receive(:root).any_number_of_times.and_return(Dir.getwd)
               @database = ShivaSpec::ShivaRakeDatabase.new('Pony', 'ponies')
               Shiva::Dumper.dump(@database)
-            rescue ActiveRecord::Tasks::DatabaseNotSupported, Shiva::TaskNotSupportedError => e
-              pending e.message
             end
           end
 
@@ -251,10 +247,8 @@ describe 'shiva namespace rake task' do
 
           it 'runs!' do
             Pony.reset_column_information
-            begin
+            catch_no_support do
               run_rake_task
-            rescue ActiveRecord::Tasks::DatabaseNotSupported, Shiva::TaskNotSupportedError => e
-              pending e.message
             end
             Pony.reset_column_information
             Pony.should be_table_exists

@@ -40,11 +40,9 @@ describe Shiva::Dumper do
         # Never use checked-in files, always use copies!
         use_database 'ponies'
         before do
-          begin
+          catch_no_support do
             @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
             Shiva::Dumper.dump(@database)
-          rescue ActiveRecord::Tasks::DatabaseNotSupported, Shiva::TaskNotSupportedError => e
-            pending e.message
           end
         end
         subject { File.open(@database.schema_path,'r') }
@@ -59,12 +57,10 @@ describe Shiva::Dumper do
         # Never use checked-in files, always use copies!
         use_database 'ponies'
         before do
-          begin
+          catch_no_support do
             @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
             Shiva::Migrator.migrate @database
             Shiva::Dumper.dump(@database)
-          rescue ActiveRecord::Tasks::DatabaseNotSupported, Shiva::TaskNotSupportedError => e
-            pending e.message
           end
         end
         subject { File.open(@database.schema_path,'r') }
@@ -87,11 +83,9 @@ describe Shiva::Dumper do
         # Never use checked-in files, always use copies!
         use_database 'ponies'
         before do
-          begin
+          catch_no_support do
             @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
             Shiva::Dumper.dump(@database)
-          rescue ActiveRecord::Tasks::DatabaseNotSupported, Shiva::TaskNotSupportedError => e
-            pending e.message
           end
         end
         subject { File.open(@database.structure_path,'r') }
@@ -105,12 +99,10 @@ describe Shiva::Dumper do
         # Never use checked-in files, always use copies!
         use_database 'ponies'
         before do
-          begin
+          catch_no_support do
             @database = ShivaSpec::DumperDatabase.new('Pony', 'ponies')
             Shiva::Migrator.migrate @database
             Shiva::Dumper.dump(@database)
-          rescue ActiveRecord::Tasks::DatabaseNotSupported, Shiva::TaskNotSupportedError => e
-            pending e.message
           end
         end
         subject { File.open(@database.structure_path,'r') }

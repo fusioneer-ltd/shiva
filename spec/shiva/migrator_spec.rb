@@ -1,6 +1,7 @@
 # -*- encoding : utf-8 -*-
 require 'shiva/migrator'
-require 'support/sqlite_database'
+require 'support/database_helper'
+require 'support/rails_compatibility'
 require 'active_record'
 require 'models/pony'
 module ShivaSpec
