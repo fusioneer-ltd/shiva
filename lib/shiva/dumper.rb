@@ -17,7 +17,7 @@ module Shiva
       when :sql
       then
         filename = ENV['DB_STRUCTURE'] || File.join(path, database.structure_path)
-        config = database.base_model.connection.config.with_indifferent_access
+        config = database.config
         if defined?(ActiveRecord::Tasks::DatabaseTasks)
           # ActiveRecord 4
           ActiveRecord::Tasks::DatabaseTasks.structure_dump(config, filename)

@@ -67,7 +67,7 @@ shiva_namespace = namespace :shiva do
         path = defined?(Rails) && Rails.respond_to?(:root) ? Rails.root : Dir.getwd
         file = ENV['SCHEMA'] || File.join(path, database_configuration.schema_path)
         if File.exists?(file)
-          ActiveRecord::Base.establish_connection(database_configuration.base_model.connection.config)
+          ActiveRecord::Base.establish_connection(database_configuration.config)
           load(file)
         else
           abort %{#{file} doesn't exist yet. Run `rake shiva:migrate` to create it, then try again. If you do not intend to use a database, you should instead alter #{path}/config/application.rb to limit the frameworks that will be loaded.}
@@ -82,7 +82,7 @@ shiva_namespace = namespace :shiva do
       apply_to_databases args do |database_configuration|
         path = defined?(Rails) && Rails.respond_to?(:root) ? Rails.root : Dir.getwd
         filename = ENV['DB_STRUCTURE'] || File.join(path, database_configuration.structure_path)
-        config = database_configuration.base_model.connection.config.with_indifferent_access
+        config = database_configuration.config
         if defined?(ActiveRecord::Tasks::DatabaseTasks)
           # ActiveRecord 4
           ActiveRecord::Tasks::DatabaseTasks.structure_load(config, filename)
