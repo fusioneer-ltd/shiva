@@ -40,6 +40,10 @@ module DatabaseHelper
       def use_database(database_name)
         before :each do
           silence_active_record do
+            if ENV['TRAVIS'].present? && /postgres/.match(ENV['DB'])
+              `psql -c 'DROP DATABASE IF EXISTS shiva_test;' -U postgres`
+              `psql -c 'create database shiva_test;' -U postgres`
+            end
             require 'shiva/database'
             require 'shiva/migrator'
             database = ShivaSpec::DumperDatabase.new(database_name.classify.singularize, database_name.tableize)
@@ -52,11 +56,16 @@ module DatabaseHelper
       def remove_database(database_name)
         before :each do
           silence_active_record do
-            require 'shiva/database'
-            require 'shiva/migrator'
-            database = ShivaSpec::DumperDatabase.new(database_name.classify.singularize, database_name.tableize)
-            Shiva::Migrator.migrate(database)
-            Shiva::Migrator.rollback(database, 1000)
+            if ENV['TRAVIS'].present? && /postgres/.match(ENV['DB'])
+              `psql -c 'DROP DATABASE IF EXISTS shiva_test;' -U postgres`
+              `psql -c 'create database shiva_test;' -U postgres`
+            else
+              require 'shiva/database'
+              require 'shiva/migrator'
+              database = ShivaSpec::DumperDatabase.new(database_name.classify.singularize, database_name.tableize)
+              Shiva::Migrator.migrate(database)
+              Shiva::Migrator.rollback(database, 1000)
+            end
           end
         end
       end
