@@ -29,6 +29,12 @@ module Shiva
       elsif base_model.connection.instance_variable_defined?(:@config)
         base_model.connection.instance_variable_get(:@config).with_indifferent_access
       end
+    rescue ActiveRecord::ConnectionNotEstablished => e
+      # this error only happens in Rake tasks before
+      # default models are preloaded and connected
+      # to base database.
+      base_model.establish_connection
+      config
     end
 
     private
