@@ -1,10 +1,10 @@
 # Shiva
 
-Rails and ActiveRecord aren't really meant to deal with several database at a time just out of the box.
+Rails and ActiveRecord are not meant to deal with several databases just out of the box.
 
-Shiva extends the rake tasks (like migrate of schema:dump) to work with several databases.
+Shiva extends Rake tasks (like db:migrate, or schema:dump) to work with several databases.
 
-This way you have a folder in db/migrate for each database, a separate schema.rb for each, etc.
+This way you can set up a separate folder in db/migrate, a separate schema.rb, and so on, for each database.
 
 ## Installation
 
@@ -16,7 +16,7 @@ And then execute:
 
     $ bundle
 
-Or install it yourself as:
+Or install it yourself with:
 
     $ gem install shiva
 
@@ -29,7 +29,7 @@ You absolutely need to use the class name using a string, we had some weird issu
 
 ```ruby
 Shiva.configure do
-  database 'Databases::Archive' # The name will be guessed from the class_name, archive here
+  database 'Databases::Archive' # The name will be guessed from the class_name, here: archive
   database 'Databases::Legacy', :old_db # Explicitly define the name
 end
 ```
@@ -38,7 +38,7 @@ end
 
 Now your migrations for Databases::Archive are defined in ```db/migrate/archive``` and those for Databases::Legacy in ```db/migrate/old_db```.
 
-You will also have several schema in ```db/schema```, in our exemple two names ```db/schema/archive_schema.rb``` and one named ```db/schema/old_db_archive.rb```.
+You will also have several schemas in ```db/schema```. In our example these would be ```db/schema/archive_schema.rb``` and ```db/schema/old_db_archive.rb```.
 
 ### Using migrations
 
@@ -46,17 +46,20 @@ You will also have several schema in ```db/schema```, in our exemple two names `
 
 This generator descends from ActiveRecord generator, so you can do all fancy stuff you are already used to.
 
-The onyl thing you need to do is to provide database_name for Shiva migrator, so it knows which database should it use.
+The only thing you need to do is to provide database_name for Shiva migrator, so it knows which database should it use.
 
 ### Using rake
 
-To run the migrations for all you databases just run
-```rake shiva:migrate```
+To run the migrations for all your databases just run
+
+    rake shiva:migrate
 
 If you want to run the migrations for a specific database use
-```rake shiva:migrate[archive]```
+
+    rake shiva:migrate[archive]
 
 To dump the schema you can use the same principle
+
 ```
 rake shiva:dump
 rake shiva:dump[old_db]
@@ -78,15 +81,11 @@ rake shiva:structure:load
 
 ### Tests [![build status](https://secure.travis-ci.org/fusioneer-ltd/shiva.png)](http://travis-ci.org/fusioneer-ltd/shiva)
 
-For now the code has no spec attached.
-
-It's not something to be proud, it's more that we're not sure how to test it properly.
-If we mock ActiveRecord::Migrator then we don't really test a lot of things, if we include a database we're actually testing ActiveRecord::Migrator ...
-If you have any idea please don't hesitate to contact us.
-
 #### Test environment
 
 (Needs updates when using different plaforms)
+
+If you're familiar with `.travis.yml`, you can prepare your own test environment just fine by looking at what's done there.
 
 ##### jRuby & SQLite
 
@@ -103,6 +102,12 @@ cd pkg
 gem install activerecord-jdbc-adapter-1.3.0.DEV.gem
 gem install activerecord-jdbcsqlite3-adapter-1.3.0.DEV.gem
 ```
+
+## Known issues
+
+### SQLite
+
+Since SQLite does not support alterations on databases, some of our specs fail while using it (namely migration rollback and schema load). We advise you checking out, if you need these features, or to migrate your database to something more reliable than SQLite.
 
 ## Contributing
 
