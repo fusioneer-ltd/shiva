@@ -77,11 +77,16 @@ module DatabaseHelper
           when /mysql/
             ActiveRecord::Base.establish_connection(database.config)
             ActiveRecord::Base.connection.recreate_database database.config['database']
-          when /postgresql/
+          when /postgres/
             database.base_model.connection.disconnect!
-            ActiveRecord::Base.establish_connection(database.config.merge('database' => 'postgres', 'schema_search_path' => 'public'))
-            ActiveRecord::Base.connection.recreate_database database.config['database']
-            ActiveRecord::Base.connection.disconnect!
+            if ENV['TRAVIS'].present?
+              `psql -c 'DROP DATABASE IF EXISTS shiva_test;' -U postgres`
+              `psql -c 'create database shiva_test;' -U postgres`
+            else
+              ActiveRecord::Base.establish_connection(database.config.merge('database' => 'postgres', 'schema_search_path' => 'public'))
+              ActiveRecord::Base.connection.recreate_database database.config['database']
+              ActiveRecord::Base.connection.disconnect!
+            end
             database.base_model.establish_connection(database.config)
           end
         end
